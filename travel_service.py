@@ -1,17 +1,17 @@
 from db import get_connection
 
-def create_travel(destination, notes, visit_date, rating):
-    if not destination or not notes or not visit_date or not rating:
-        raise ValueError("Illegal input")
-    if rating < 0 or rating > 10:
-        raise ValueError("Illegal rating value")
-    if type(rating) != float or type(rating) != int:
-        raise TypeError("Enter value between 0.0 and 10.0 for rating")
+def create_travel(destination, visit_date, notes=None, rating=None):
+    if not destination or not visit_date:
+        raise ValueError("Must have destination and visit_date")
+   
+    if rating is not None:
+        if not isinstance(rating, (int, float)) or not 0 <= rating <= 10:
+            raise TypeError("Enter value between 0.0 and 10.0 for rating")
     
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(
-        "INSERT INTO travels (destination, visit_date, notes, rating), (%s, %s, %s, %s)", (destination, visit_date, notes, rating)
+        "INSERT INTO travels (destination, visit_date, notes, rating) VALUES (%s, %s, %s, %s)", (destination, visit_date, notes, rating)
     )
     conn.commit()
     cursor.close()
@@ -26,7 +26,7 @@ def get_all_travels():
     res = cursor.fetchall()
     cursor.close()
     conn.close()
-    return res if res else "No records in journal"
+    return res
 
 def get_travel_by_id(travel_id):
     conn = get_connection()
@@ -34,7 +34,7 @@ def get_travel_by_id(travel_id):
     cursor.execute(
         "SELECT * FROM travels WHERE id=%s", (travel_id,)
     )
-    res = cursor.fetchall()
+    res = cursor.fetchone()
     cursor.close()
     conn.close()
     return res
@@ -46,7 +46,7 @@ def delete_travel_by_id(travel_id):
     cursor.execute(
         "DELETE FROM travels WHERE id=%s", (travel_id,)
     )
-    res = cursor.rowcount()
+    res = cursor.rowcount
     cursor.close()
     conn.close()
     return res > 0
@@ -71,7 +71,7 @@ def update_travel_by_id(travel_id, destination=None, visit_date=None, notes=None
         params.append(notes)
     
     if rating:
-        if rating < 0 or rating > 10:
+        if not isinstance(rating, (int, float)) or not 0 <= rating <= 10:
             raise ValueError("Illegal rating")
         
         updates.append("rating=%s")
@@ -82,12 +82,12 @@ def update_travel_by_id(travel_id, destination=None, visit_date=None, notes=None
         conn.close()
         return
 
-    query += ", ".join(updates) + "WHERE id=%s"
+    query += ", ".join(updates) + " WHERE id=%s"
     params.append(travel_id)
 
     cursor.execute(query, tuple(params))
     conn.commit()
-    res = cursor.rowcount()
+    res = cursor.rowcount
     cursor.close()
     conn.close()
 
