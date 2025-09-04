@@ -7,17 +7,15 @@ The API is built using Python, Flask, and PyMySQL, with a MySQL database backend
 
 ### Key Features
 - CRUD operations for travel entries
-- Input validation, including date-only and rating checks
+- Input validation, including date and rating checks
 - JSON API responses with clear success/error messages
-- Modular code design with separation of concerns
 
 ## Technologies Used
 - Python 3: Backend language, familiar and flexible
-- Flask: Lightweight web framework for REST API
-- PyMySQL: Direct MySQL connection without ORM
+- Flask: Web framework for REST API
+- PyMySQL: Direct MySQL connection
 - MySQL: Relational database for structured travel data
 - Postman: API testing and development
-- Flask Blueprints: Modular routing for scalable endpoints
 
 ## Database Design
 Table: `travels`
@@ -26,8 +24,6 @@ Table: `travels`
 - visit_date: date (YYYY-MM-DD), required
 - notes: string, optional
 - rating: float (0.0 to 10.0), optional
-
-## API Endpoints
 
 ### Base URL
 `/api/travel-journal`
