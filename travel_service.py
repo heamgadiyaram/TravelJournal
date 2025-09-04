@@ -1,9 +1,15 @@
 from db import get_connection
+from datetime import datetime
 
 def create_travel(destination, visit_date, notes=None, rating=None):
     if not destination or not visit_date:
         raise ValueError("Must have destination and visit_date")
    
+    try:
+        datetime.strptime(visit_date, "%Y-%m-%d")
+    except ValueError:
+        raise ValueError("visit_date must be in YYYY-MM-DD format")
+
     if rating is not None:
         if not isinstance(rating, (int, float)) or not 0 <= rating <= 10:
             raise TypeError("Enter value between 0.0 and 10.0 for rating")
@@ -63,6 +69,11 @@ def update_travel_by_id(travel_id, destination=None, visit_date=None, notes=None
         params.append(destination)
     
     if visit_date:
+        try:
+            datetime.strptime(visit_date, "%Y-%m-%d")
+        except ValueError:
+            raise ValueError("visit_date must be in YYYY-MM-DD format")
+        
         updates.append("visit_date=%s")
         params.append(visit_date)
     
@@ -92,4 +103,5 @@ def update_travel_by_id(travel_id, destination=None, visit_date=None, notes=None
     conn.close()
 
     return res > 0
+    
     

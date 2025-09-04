@@ -3,7 +3,7 @@ from routes import travels_bp
 
 def create_app():
     app = Flask(__name__)
-    app.register_blueprint(travels_bp, url_prefix="/api")
+    app.register_blueprint(travels_bp, url_prefix="/api/travel-journal")
 
     @app.get("/")
     def root():
