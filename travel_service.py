@@ -53,6 +53,7 @@ def delete_travel_by_id(travel_id):
         "DELETE FROM travels WHERE id=%s", (travel_id,)
     )
     res = cursor.rowcount
+    conn.commit()
     cursor.close()
     conn.close()
     return res > 0
