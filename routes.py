@@ -22,19 +22,19 @@ def create_travel():
 
     return jsonify({"message": "Travel created successfully."}), 201
 
-@travels_bp.route('/get_all_records', methods=['GET'])
+@travels_bp.route('/get-all-records', methods=['GET'])
 def get_all_travels():
     all_travels = travel_service.get_all_travels()
     return jsonify(all_travels), 200
 
-@travels_bp.route('/get_record/<int:travel_id>', methods=['GET'])
+@travels_bp.route('/get-record/<int:travel_id>', methods=['GET'])
 def get_travel_by_id(travel_id):
     travel = travel_service.get_travel_by_id(travel_id)
     if not travel:
         return jsonify({"error": "travel id not found"}), 404
     return jsonify(travel), 200
 
-@travels_bp.route('/delete_record/<int:travel_id>', methods=['DELETE'])
+@travels_bp.route('/delete-record/<int:travel_id>', methods=['DELETE'])
 def delete_travel_by_id(travel_id):
     deleted = travel_service.delete_travel_by_id(travel_id)
     if not deleted:
@@ -42,7 +42,7 @@ def delete_travel_by_id(travel_id):
     
     return jsonify({"message": "travel record deleted"}), 200
 
-@travels_bp.route('/update_record/<int:travel_id>', methods=['PUT'])
+@travels_bp.route('/update-record/<int:travel_id>', methods=['PUT'])
 def update_travel_by_id(travel_id):
     data = request.json
 
@@ -91,5 +91,11 @@ def create_photo(travel_id):
         "destination": destination,
         "image_url": image_url,
     }), 200
+
+@travels_bp.route('/stats/average-ratings', methods=['GET'])
+def average_ratings_by_country():
+    stats = travel_service.get_average_ratings_by_country()
+    return jsonify(stats), 200
+
 
     

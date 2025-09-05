@@ -117,5 +117,23 @@ def update_travel_by_id(travel_id, destination=None, visit_date=None, country=No
     conn.close()
 
     return res > 0
+
+def get_average_ratings_by_country():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        SELECT country, AVG(rating) AS avg_rating
+        FROM travels
+        WHERE rating IS NOT NULL
+        GROUP BY country
+        ORDER BY avg_rating DESC
+        """
+    )
+    res = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return res
+
     
     
