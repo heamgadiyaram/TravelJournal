@@ -1,7 +1,6 @@
 # Travel Journal API
 
-
-A RESTful service that allows users to manage their travel experiences. Users can create, read, update, and delete journal entries, each containing a destination, visit date, optional notes, and optional rating.
+A service that allows users to manage their travel experiences. Users can create, read, update, and delete journal entries, each containing a destination, visit date, optional notes, and optional rating.
 
 The API is built using Python, Flask, and PyMySQL, with a MySQL database backend.
 
@@ -64,4 +63,6 @@ Table: `travels`
 - Error (404): `{"message": "No image found for this destination"}`
 
 
-
+### Stats Endpoint
+- Provide aggregated statistics about the travel journal entries
+- GET `/api/travel-journal/stats`
