@@ -11,10 +11,11 @@ def create_travel():
     try:
         destination = data.get('destination')
         visit_date = data.get('visit_date')
+        country = data.get('country')
         notes = data.get('notes')
         rating = data.get('rating')
 
-        travel_service.create_travel(destination, visit_date, notes, rating)
+        travel_service.create_travel(destination, visit_date, country, notes, rating)
 
     except (ValueError, TypeError) as e:
         return jsonify({"error": str(e)}), 400
@@ -50,6 +51,7 @@ def update_travel_by_id(travel_id):
             travel_id=travel_id,
             destination=data.get('destination'),
             visit_date=data.get('visit_date'),
+            country = data.get('country'),
             notes=data.get('notes'),
             rating=data.get('rating')
             )

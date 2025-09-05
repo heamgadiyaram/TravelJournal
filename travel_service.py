@@ -1,10 +1,16 @@
 from db import get_connection
 from datetime import datetime
+from iso3166 import countries
 
-def create_travel(destination, visit_date, notes=None, rating=None):
+country_codes = [c.alpha2 for c in countries]
+
+def create_travel(destination, visit_date, country, notes=None, rating=None):
     if not destination or not visit_date:
         raise ValueError("Must have destination and visit_date")
    
+    if country not in country_codes:
+        raise ValueError("Must enter valid country code.")
+    
     try:
         datetime.strptime(visit_date, "%Y-%m-%d")
     except ValueError:
@@ -17,7 +23,7 @@ def create_travel(destination, visit_date, notes=None, rating=None):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(
-        "INSERT INTO travels (destination, visit_date, notes, rating) VALUES (%s, %s, %s, %s)", (destination, visit_date, notes, rating)
+        "INSERT INTO travels (destination, visit_date, notes, rating, country) VALUES (%s, %s, %s, %s, %s)", (destination, visit_date, notes, rating, country)
     )
     conn.commit()
     cursor.close()
@@ -58,7 +64,7 @@ def delete_travel_by_id(travel_id):
     conn.close()
     return res > 0
 
-def update_travel_by_id(travel_id, destination=None, visit_date=None, notes=None, rating=None):
+def update_travel_by_id(travel_id, destination=None, visit_date=None, country=None, notes=None, rating=None):
     conn = get_connection()
     cursor = conn.cursor()
     query = "UPDATE travels SET "
@@ -77,6 +83,13 @@ def update_travel_by_id(travel_id, destination=None, visit_date=None, notes=None
         
         updates.append("visit_date=%s")
         params.append(visit_date)
+    
+    if country:
+        if country not in country_codes:
+           raise ValueError("Must enter valid country code.")
+        
+        updates.append("country=%s")
+        params.append(country) 
     
     if notes:
         updates.append("notes=%s")
