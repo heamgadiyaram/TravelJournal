@@ -135,5 +135,6 @@ def get_average_ratings_by_country():
     conn.close()
     return res
 
+
     
     

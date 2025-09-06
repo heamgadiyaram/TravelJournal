@@ -69,10 +69,11 @@ def create_photo(travel_id):
     if not travel:
         return jsonify({"error": "travel id not found"})
     destination = travel.get('destination')
+    country = travel.get('country')
 
     url = "https://api.unsplash.com/search/photos"
     params = {
-        "query": destination,
+        "query": f"{destination}, {country}",
         "client_id": Config.UNSPLASH_ACCESS_KEY,
         "per_page": 1
     }
@@ -88,7 +89,7 @@ def create_photo(travel_id):
     image_url = data['results'][0]['urls']['regular']
 
     return jsonify({
-        "destination": destination,
+        "destination": f"{destination}, {country}",
         "image_url": image_url,
     }), 200
 
@@ -96,6 +97,9 @@ def create_photo(travel_id):
 def average_ratings_by_country():
     stats = travel_service.get_average_ratings_by_country()
     return jsonify(stats), 200
+
+
+
 
 
     

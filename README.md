@@ -65,4 +65,4 @@ Table: `travels`
 
 ### Stats Endpoint
 - Provide aggregated statistics about the travel journal entries
-- GET `/api/travel-journal/stats`
+- GET `/api/travel-journal/stats/average-ratings`
